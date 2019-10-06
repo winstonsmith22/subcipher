@@ -1,0 +1,49 @@
+%input
+prompt = {'Enter Your Message','Enter Your Cipher Key','Select Case (0=create, 1=solve)'}
+dlgtitle = 'Input'
+dims = [1 35]
+definput = {'helloworld','15','0'}
+response = inputdlg(prompt,dlgtitle,dims,definput)
+
+
+message = response{1}
+key = str2num(response{2})
+caseid = str2num(response{3})
+
+
+%creating shuffled alphabet
+alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
+idx = 1
+for idx = [1:26]
+    if key < 27
+        scramble{1,idx} = alphabet{1,key}
+        idx = idx+1
+        key = key+1
+    else
+        key = key-26;
+        scramble{1,idx} = alphabet{1,key}
+        idx = idx+1
+        key = key+1
+    end
+end
+
+%indexing and creating ciphertext
+len = length(message);
+switch(caseid)
+    case 0
+        for counter = [1:len]
+    temp = ismember(alphabet,message(counter))
+    cipher{1,counter}=char(scramble(temp))
+        end
+    case 1
+        for counter = [1:len]
+    temp = ismember(scramble,message(counter))
+    cipher{1,counter}=char(alphabet(temp))
+        end
+end
+%output
+cipher = string(cipher)
+disp(sprintf('%s',message))
+disp(sprintf('%s',cipher))
+clear
+
